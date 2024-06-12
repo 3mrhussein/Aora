@@ -1,24 +1,15 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '@/constants/images';
-import FormField from '@/components/FormField';
-import CustomButton from '@/components/CustomButton';
+import FormField from '@/components/FormField/FormField';
+import CustomButton from '@/components/CustomButton/CustomButton';
 import { Link, router } from 'expo-router';
 import { signIn } from '@/api/login';
-import { useGlobalContext } from '@/context/GlobalProvider';
 import useUser from '@/hooks/useUser';
-import icons from '@/constants/icons';
 import { getCurrentUser } from '@/api/user';
 const SignIn = () => {
-  const { user, setUser, isLoggedIn, setIsLoggedIn } =
-    useUser();
+  const { user, setUser, isLoggedIn, setIsLoggedIn } = useUser();
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -69,7 +60,7 @@ const SignIn = () => {
             }}
             otherStyles='mt-7'
             keyboardType='email-address'
-            placehodler={'Email'}
+            placeholder={'Email'}
           />
 
           <FormField
@@ -79,7 +70,7 @@ const SignIn = () => {
               setForm({ ...form, password: e });
             }}
             otherStyles='mt-7'
-            placehodler={'Passowrd'}
+            placeholder={'Passowrd'}
           />
 
           <CustomButton

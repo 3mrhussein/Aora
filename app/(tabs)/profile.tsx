@@ -1,27 +1,19 @@
-import {
-  View,
-  Image,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-
+import { View, Image, FlatList, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getUserPosts, searchPosts } from '@/api/posts';
 import useFetchData from '@/hooks/useFetchData';
 import icons from '@/constants/icons';
 import EmptyState from '@/components/EmptyState';
-import VideoCard from '@/components/VideoCard';
-import InfoBox from '@/components/InfoBox';
+import VideoCard from '@/components/VideoCard/VideoCard';
+import InfoBox from '@/components/InfoBox/InfoBox';
 import { logoutUser } from '@/api/user';
 import { router } from 'expo-router';
-import { useGlobalContext } from '@/context/GlobalProvider';
+import { useGlobalContext } from '@/context/Global/GlobalProvider';
 
 const Profile = () => {
-  const { user, setUser, setIsLoggedIn } =
-    useGlobalContext();
-  const { data } = useFetchData(() =>
-    getUserPosts(user.$id)
-  );
+  const { user, setUser, setIsLoggedIn } = useGlobalContext();
+  const { data } = useFetchData(() => getUserPosts(user.$id));
   const handleLogout = async () => {
     const session = await logoutUser();
     if (session) {

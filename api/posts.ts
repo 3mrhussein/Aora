@@ -1,9 +1,6 @@
 import { config, databases, storage } from '@/lib/appwrite';
-import {
-  ID,
-  ImageGravity,
-  Query,
-} from 'react-native-appwrite';
+import { ID, ImageGravity, Models, Query } from 'react-native-appwrite';
+import { VideoType } from './Types/video.types';
 
 export const getAllPosts = async () => {
   try {
@@ -14,7 +11,7 @@ export const getAllPosts = async () => {
     );
     return posts.documents;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 };
 
@@ -27,7 +24,7 @@ export const getLatestPosts = async () => {
     );
     return posts.documents;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 };
 export const searchPosts = async (query) => {
@@ -39,10 +36,10 @@ export const searchPosts = async (query) => {
     );
     return posts.documents;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 };
-export const getUserPosts = async (userId) => {
+export const getUserPosts = async (userId): Promise<Models.Document[]> => {
   try {
     const posts = await databases.listDocuments(
       config.databaseId,
@@ -51,7 +48,7 @@ export const getUserPosts = async (userId) => {
     );
     return posts.documents;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 };
 
@@ -59,10 +56,7 @@ export const getFilePreview = async (fileId, type) => {
   let fileUrl;
   try {
     if (type === 'video') {
-      fileUrl = storage.getFileView(
-        config.storageId,
-        fileId
-      );
+      fileUrl = storage.getFileView(config.storageId, fileId);
     } else if (type === 'image')
       fileUrl = storage.getFilePreview(
         config.storageId,
@@ -74,11 +68,10 @@ export const getFilePreview = async (fileId, type) => {
       );
     else throw new Error('Invalid file type');
 
-    if (!fileUrl)
-      throw Error('File Url is not generated correctly');
+    if (!fileUrl) throw Error('File Url is not generated correctly');
     return fileUrl;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error as string);
   }
 };
 
@@ -99,14 +92,11 @@ export const uploadFile = async (file, type) => {
       }
     );
 
-    const fileUrl = await getFilePreview(
-      uploadedFile.$id,
-      type
-    );
+    const fileUrl = await getFilePreview(uploadedFile.$id, type);
 
     return fileUrl;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 };
 
@@ -131,6 +121,6 @@ export const createVideo = async (form) => {
     );
     return newPost;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err as string);
   }
 };

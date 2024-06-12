@@ -1,15 +1,9 @@
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '@/constants/images';
-import FormField from '@/components/FormField';
-import CustomButton from '@/components/CustomButton';
+import FormField from '@/components/FormField/FormField';
+import CustomButton from '@/components/CustomButton/CustomButton';
 import { Link, router } from 'expo-router';
 import { createUser } from '@/api/user';
 const SignUp = () => {
@@ -25,11 +19,7 @@ const SignUp = () => {
       Alert.alert('Please fill all required fields');
     else {
       setIsSubmitting(true);
-      await createUser(
-        form.email,
-        form.password,
-        form.username
-      )
+      await createUser(form.email, form.password, form.username)
         .then((res) => {
           router.replace('/home');
         })

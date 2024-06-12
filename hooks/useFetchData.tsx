@@ -1,8 +1,9 @@
-import { View, Text, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Models } from 'react-native-appwrite';
 
 const useFetchData = (callback) => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<Models.Document[] & any>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async (fetchCallback) => {
@@ -12,7 +13,7 @@ const useFetchData = (callback) => {
       if (response) {
         setData(response);
       }
-    } catch (err) {
+    } catch (err: any) {
       Alert.alert('Error', err.message);
       console.log(err);
     } finally {

@@ -1,14 +1,9 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import icons from '@/constants/icons';
 import { ResizeMode, Video } from 'expo-av';
-
-const VideoCard = ({
+import { VideoCardProps } from './VideoCard.types';
+const VideoCard: React.FC<VideoCardProps> = ({
   video: {
     title,
     thumbnail,
@@ -44,11 +39,7 @@ const VideoCard = ({
           </View>
         </View>
         <View className='pt-2'>
-          <Image
-            source={icons.menu}
-            className='w-5 h-5'
-            resizeMode='contain'
-          />
+          <Image source={icons.menu} className='w-5 h-5' resizeMode='contain' />
         </View>
       </View>
       {play ? (

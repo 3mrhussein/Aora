@@ -1,28 +1,40 @@
 import { getCurrentUser } from '@/api/user';
-import {
+import React, {
   createContext,
   useContext,
   useState,
   useEffect,
+  PropsWithChildren,
 } from 'react';
+import { GlobalContextType } from './Global.types';
 
-const GlobalContext = createContext(null);
+const initialContextValue = {
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
+  user: null,
+  setUser: () => {},
+  isLoading: false,
+  setIsLoading: () => {},
+  isDataUpToDate: false,
+  setIsDataUpToDate: () => {},
+};
 
-export const useGlobalContext = () =>
+const GlobalContext = createContext<GlobalContextType>(initialContextValue);
+
+export const useGlobalContext = (): GlobalContextType =>
   useContext(GlobalContext);
 
-const GlobalProvider = ({ children }) => {
+const GlobalProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDataUpToDate, setIsDataUpToDate] =
-    useState(true);
+  const [isDataUpToDate, setIsDataUpToDate] = useState(true);
   useEffect(() => {
     getCurrentUser()
       .then((res) => {
         if (res) {
           setIsLoggedIn(true);
-          setUser(res);
+          setUser(res as any);
         } else {
           setIsLoggedIn(false);
           setUser(null);

@@ -1,9 +1,8 @@
-import { useGlobalContext } from '@/context/GlobalProvider';
+import { useGlobalContext } from '@/context/Global/GlobalProvider';
 import React from 'react';
 
 const useUser = () => {
-  const { user, setUser, isLoggedIn, setIsLoggedIn } =
-    useGlobalContext();
+  const { user, setUser, isLoggedIn, setIsLoggedIn } = useGlobalContext();
   return {
     isLoggedIn,
     user,

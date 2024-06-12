@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  Alert,
-  FlatList,
-} from 'react-native';
+import { View, Text, Image, Alert, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {
   router,
@@ -15,19 +9,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { searchPosts } from '@/api/posts';
 import useFetchData from '@/hooks/useFetchData';
-import FormField from '@/components/FormField';
+import FormField from '@/components/FormField/FormField';
 import icons from '@/constants/icons';
 import EmptyState from '@/components/EmptyState';
-import VideoCard from '@/components/VideoCard';
+import VideoCard from '@/components/VideoCard/VideoCard';
 
 const Search = () => {
   const { query } = useLocalSearchParams();
-  const [searchQuery, setSearchQuery] = useState(query);
-  const { data: posts, refetch } = useFetchData(() =>
-    searchPosts(searchQuery)
-  );
+  const [searchQuery, setSearchQuery] = useState(query as string);
+  const { data: posts, refetch } = useFetchData(() => searchPosts(searchQuery));
   let searchInput = searchQuery ?? '';
-  const handleSearchQueryChange = (e) => {
+  const handleSearchQueryChange = (e: string) => {
     searchInput = e;
   };
 
@@ -62,7 +54,7 @@ const Search = () => {
 
               <FormField
                 value={searchQuery}
-                placehodler={'Search for a video topic'}
+                placeholder={'Search for a video topic'}
                 icon={icons.search}
                 onChangeText={handleSearchQueryChange}
                 onIconPress={() => {

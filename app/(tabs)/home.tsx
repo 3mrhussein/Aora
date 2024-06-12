@@ -9,24 +9,22 @@ import {
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '@/constants/images';
-import { useGlobalContext } from '@/context/GlobalProvider';
-import FormField from '@/components/FormField';
+import { useGlobalContext } from '@/context/Global/GlobalProvider';
+import FormField from '@/components/FormField/FormField';
 import icons from '@/constants/icons';
 import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
 import { getAllPosts, getLatestPosts } from '@/api/posts';
 import useFetchData from '@/hooks/useFetchData';
-import VideoCard from '@/components/VideoCard';
+import VideoCard from '@/components/VideoCard/VideoCard';
 import { router, usePathname } from 'expo-router';
 
 const Home = () => {
   const pathname = usePathname();
-  const { user, isDataUpToDate, setIsDataUpToDate } =
-    useGlobalContext();
+  const { user, isDataUpToDate, setIsDataUpToDate } = useGlobalContext();
   const [refreshing, setRefreshing] = useState(false);
   let searchQuery = '';
-  const { data: posts, refetch } =
-    useFetchData(getAllPosts);
+  const { data: posts, refetch } = useFetchData(getAllPosts);
   const { data: latestPosts, refetch: refetchLatestPosts } =
     useFetchData(getLatestPosts);
 
@@ -45,7 +43,6 @@ const Home = () => {
       setIsDataUpToDate(true);
     }
   }, [refetch]);
-
   return (
     <SafeAreaView className='bg-primary'>
       <View className='  min-h-full bg-primary '>
@@ -77,7 +74,7 @@ const Home = () => {
                   </View>
                 </View>
                 <FormField
-                  placehodler={'Search for a video topic'}
+                  placeholder={'Search for a video topic'}
                   icon={icons.search}
                   onChangeText={(e) => (searchQuery = e)}
                   onIconPress={() => {
@@ -89,8 +86,7 @@ const Home = () => {
                     }
                     if (pathname.startsWith('/search'))
                       router.setParams({ searchQuery });
-                    else
-                      router.push(`/search/${searchQuery}`);
+                    else router.push(`/search/${searchQuery}`);
                   }}
                 />
                 <View className='w-full my-4'>
@@ -111,10 +107,7 @@ const Home = () => {
             </SafeAreaView>
           }
           refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-            />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
       </View>

@@ -1,27 +1,30 @@
 import {
-  View,
-  Text,
   FlatList,
   TouchableOpacity,
   ImageBackground,
   Image,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as Animatable from 'react-native-animatable';
 import icons from '@/constants/icons';
 import { ResizeMode, Video } from 'expo-av';
 const zoomIn = {
-  0: {
-    scale: 0.9,
+  from: {
+    scaleX: 0.9,
+    scaleY: 0.9,
   },
-  1: { scale: 1.1 },
+  to: { scaleX: 1.1, scaleY: 1.1 },
 };
 
 const zoomOut = {
-  0: {
-    scale: 1.1,
+  from: {
+    scaleX: 1.1,
+    scaleY: 1.1,
   },
-  1: { scale: 0.9 },
+  to: {
+    scaleX: 0.9,
+    scaleY: 0.9,
+  },
 };
 const TrendingItem = ({ activeItem, item }) => {
   const [play, setPlay] = useState(false);
@@ -29,9 +32,7 @@ const TrendingItem = ({ activeItem, item }) => {
   return (
     <Animatable.View
       className={`mx-4 my-2 ${
-        activeItem === item.$id
-          ? 'shadow-sm shadow-black '
-          : ''
+        activeItem === item.$id ? 'shadow-sm shadow-black ' : ''
       }`}
       animation={activeItem === item.$id ? zoomIn : zoomOut}
       duration={500}
@@ -44,7 +45,7 @@ const TrendingItem = ({ activeItem, item }) => {
           useNativeControls
           shouldPlay
           onPlaybackStatusUpdate={(status) => {
-            if (status.didJustFinish) setPlay(false);
+            if (status.isLoaded && status.didJustFinish) setPlay(false);
           }}
         />
       ) : (
@@ -61,7 +62,7 @@ const TrendingItem = ({ activeItem, item }) => {
           <Image
             source={icons.play}
             className='absolute w-12 h-12'
-            resizeMode='conatin'
+            resizeMode='contain'
           />
         </TouchableOpacity>
       )}
@@ -91,7 +92,7 @@ const Trending = ({ posts }) => {
       viewabilityConfig={{
         itemVisiblePercentThreshold: 90,
       }}
-      contentOffset={{ x: 120 }}
+      contentOffset={{ x: 120, y: 0 }}
     />
   );
 };

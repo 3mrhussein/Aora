@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native';
 import React from 'react';
 import images from '@/constants/images';
-import CustomButton from './CustomButton';
+import CustomButton from './CustomButton/CustomButton';
 import { router } from 'expo-router';
 
 const EmptyState = ({ title, subtitle }) => {
@@ -15,12 +15,10 @@ const EmptyState = ({ title, subtitle }) => {
       <Text className='font-psemibold mt-2 text-xl text-center text-white'>
         {title}
       </Text>
-      <Text className='font-pmedium text-sm text-gray-100'>
-        {subtitle}
-      </Text>
+      <Text className='font-pmedium text-sm text-gray-100'>{subtitle}</Text>
       <CustomButton
         title='Create Video'
-        handlePress={() => router.push('/create')}
+        onPress={() => router.push('/create')}
         containerStyles={'w-full my-5'}
       />
     </View>

@@ -8,10 +8,10 @@ import {
   Alert,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import FormField from '@/components/FormField';
+import FormField from '@/components/FormField/FormField';
 import { ResizeMode, Video } from 'expo-av';
 import icons from '@/constants/icons';
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/CustomButton/CustomButton';
 import { router } from 'expo-router';
 import useUser from '@/hooks/useUser';
 import { createVideo } from '@/api/posts';
@@ -20,7 +20,7 @@ import * as ImagePicker from 'expo-image-picker';
 const Create = () => {
   const [uploading, setUploading] = useState(false);
   const { user } = useUser();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<React.SetStateAction<any>>({
     title: '',
     video: null,
     thumbnail: null,
@@ -71,10 +71,7 @@ const Create = () => {
         }
       } else {
         setTimeout(() => {
-          Alert.alert(
-            'Selection Canceled',
-            'You did not select any file.'
-          );
+          Alert.alert('Selection Canceled', 'You did not select any file.');
         }, 100);
       }
     } catch (error) {
@@ -89,12 +86,7 @@ const Create = () => {
   const submit = async () => {
     const { $id } = user;
 
-    if (
-      !form.prompt ||
-      !form.title ||
-      !form.thumbnail ||
-      !form.video
-    )
+    if (!form.prompt || !form.title || !form.thumbnail || !form.video)
       return Alert.alert('Please fill in all the fields');
     setUploading(true);
     try {
@@ -102,7 +94,7 @@ const Create = () => {
 
       Alert.alert('Success', 'Post uploaded successfuly');
       router.push('/home');
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       Alert.alert('Error', err.message);
     } finally {
@@ -125,16 +117,14 @@ const Create = () => {
         title={'Video Title'}
         value={form.title}
         onChangeText={(e) => setForm({ ...form, title: e })}
-        placehodler={'Give your video a catch title ....'}
+        placeholder={'Give your video a catch title ....'}
         otherStyles={'mt-10'}
       />
       <View className='mt-7 space-y-2'>
         <Text className='text-base text-gray-100 font-pmedium'>
           Upload Video
         </Text>
-        <TouchableOpacity
-          onPress={() => openPicker('video')}
-        >
+        <TouchableOpacity onPress={() => openPicker('video')}>
           {form.video ? (
             <Video
               source={{ uri: form.video.uri }}
@@ -160,9 +150,7 @@ const Create = () => {
         <Text className='text-base text-gray-100 font-pmedium'>
           Thumbnail Image
         </Text>
-        <TouchableOpacity
-          onPress={() => openPicker('image')}
-        >
+        <TouchableOpacity onPress={() => openPicker('image')}>
           {form.thumbnail ? (
             <Image
               source={{ uri: form.thumbnail.uri }}
@@ -186,17 +174,13 @@ const Create = () => {
       <FormField
         title={'Ai Prompt'}
         value={form.prompt}
-        onChangeText={(e) =>
-          setForm({ ...form, prompt: e })
-        }
-        placehodler={
-          'The prompt you used to create this video'
-        }
+        onChangeText={(e) => setForm({ ...form, prompt: e })}
+        placeholder={'The prompt you used to create this video'}
         otherStyles={'mt-7'}
       />
       <CustomButton
         title={'Submit & Publish'}
-        handlePress={submit}
+        onPress={submit}
         containerStyles={'mt-7 '}
         isLoading={uploading}
       />
