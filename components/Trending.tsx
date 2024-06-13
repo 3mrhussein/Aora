@@ -28,7 +28,6 @@ const zoomOut = {
 };
 const TrendingItem = ({ activeItem, item }) => {
   const [play, setPlay] = useState(false);
-
   return (
     <Animatable.View
       className={`mx-4 my-2 ${
@@ -56,14 +55,15 @@ const TrendingItem = ({ activeItem, item }) => {
         >
           <ImageBackground
             source={{ uri: item.thumbnail }}
-            className='w-52 h-72 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40'
+            className='w-52 h-72 rounded-[35px] my-5 overflow-hidden shadow-lg shadow-black/40 justify-center items-center'
             resizeMode='cover'
-          />
-          <Image
-            source={icons.play}
-            className='absolute w-12 h-12'
-            resizeMode='contain'
-          />
+          >
+            <Image
+              source={icons.play}
+              className=' absolute w-12 h-12'
+              resizeMode='contain'
+            />
+          </ImageBackground>
         </TouchableOpacity>
       )}
     </Animatable.View>
@@ -78,7 +78,6 @@ const Trending = ({ posts }) => {
       setActiveItem(viewableItems[0].key);
     }
   };
-
   return (
     <FlatList
       data={posts}

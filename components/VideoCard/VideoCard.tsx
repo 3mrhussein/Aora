@@ -13,7 +13,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
 }) => {
   const [play, setPlay] = useState(false);
   return (
-    <View className='flex-col items-center mb-14  '>
+    <View className=' flex-col items-center mb-14  '>
       <View className='flex-row w-full gap-y-3  items-start'>
         <View className='justify-center items-center flex-row flex'>
           <View className=' w-[46px] h-[46px] rounded-lg  border border-secondary-100 justify-center items-center p-0.5'>
@@ -50,7 +50,7 @@ const VideoCard: React.FC<VideoCardProps> = ({
           useNativeControls
           shouldPlay
           onPlaybackStatusUpdate={(status) => {
-            if (status.didJustFinish) setPlay(false);
+            if (status.isLoaded && status.didJustFinish) setPlay(false);
           }}
         />
       ) : (

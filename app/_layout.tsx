@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import GlobalProvider from '@/context/Global/GlobalProvider';
 import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -28,20 +29,25 @@ export default function RootLayout() {
 
   return (
     <GlobalProvider>
-      <Stack
-        screenOptions={{
-          contentStyle: {
-            backgroundColor: '#161622',
-            paddingHorizontal: 10,
-          },
-        }}
-      >
-        <Stack.Screen name='index' options={{ headerShown: false }} />
-        <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-        <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-        <Stack.Screen name='search/[query]' options={{ headerShown: false }} />
-        {/* <Stack.Screen name='profile' options={{ headerShown: false }} /> */}
-      </Stack>
+      <SafeAreaView className='bg-primary h-full'>
+        <Stack
+          screenOptions={{
+            contentStyle: {
+              backgroundColor: '#161622',
+              paddingHorizontal: 10,
+            },
+          }}
+        >
+          <Stack.Screen name='index' options={{ headerShown: false }} />
+          <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+          <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
+          <Stack.Screen
+            name='search/[query]'
+            options={{ headerShown: false }}
+          />
+          {/* <Stack.Screen name='profile' options={{ headerShown: false }} /> */}
+        </Stack>
+      </SafeAreaView>
     </GlobalProvider>
   );
 }

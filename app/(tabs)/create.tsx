@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  SafeAreaView,
   ScrollView,
   Image,
   TouchableOpacity,
@@ -17,13 +16,23 @@ import useUser from '@/hooks/useUser';
 import { createVideo } from '@/api/posts';
 import { checkPermissions } from '@/helpers/permissions';
 import * as ImagePicker from 'expo-image-picker';
+import { Models } from 'react-native-appwrite';
+import { openPicker } from '@/helpers/utils';
+
+interface FormType {
+  title: string;
+  video: ImagePicker.ImagePickerAsset | undefined;
+  thumbnail: ImagePicker.ImagePickerAsset | undefined;
+  prompt: string;
+}
+
 const Create = () => {
   const [uploading, setUploading] = useState(false);
   const { user } = useUser();
-  const [form, setForm] = useState<React.SetStateAction<any>>({
+  const [form, setForm] = useState<FormType>({
     title: '',
-    video: null,
-    thumbnail: null,
+    video: undefined,
+    thumbnail: undefined,
     prompt: '',
   });
 
@@ -31,55 +40,25 @@ const Create = () => {
     checkPermissions();
   }, []);
 
-  const openPicker = async (selectType) => {
+  const handleFiles = async (type: 'image' | 'video') => {
     try {
-      // Request the media library permission
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert(
-          'Permission Denied',
-          'We need access to your photos/videos to proceed.'
-        );
-        return;
+      const assets = await openPicker(type);
+      if (type === 'image') {
+        setForm((prevForm) => ({
+          ...prevForm,
+          thumbnail: assets,
+        }));
+      } else if (type === 'video') {
+        setForm((prevForm) => ({
+          ...prevForm,
+          video: assets,
+        }));
       }
-
-      // Launch the picker based on the selected type
-      let result;
-      result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes:
-          selectType === 'image'
-            ? ImagePicker.MediaTypeOptions.Images
-            : ImagePicker.MediaTypeOptions.Videos,
-        aspect: [4, 3],
-        quality: 1,
-      });
-
-      if (!result.canceled) {
-        const selectedAsset = result.assets[0]; // Access the first selected asset
-
-        if (selectType === 'image') {
-          setForm((prevForm) => ({
-            ...prevForm,
-            thumbnail: selectedAsset,
-          }));
-        } else if (selectType === 'video') {
-          setForm((prevForm) => ({
-            ...prevForm,
-            video: selectedAsset,
-          }));
-        }
-      } else {
-        setTimeout(() => {
-          Alert.alert('Selection Canceled', 'You did not select any file.');
-        }, 100);
-      }
-    } catch (error) {
+    } catch (err) {
       Alert.alert(
         'Error',
         'An error occurred while selecting the file. Please try again.'
       );
-      console.error(error);
     }
   };
 
@@ -100,8 +79,8 @@ const Create = () => {
     } finally {
       setForm({
         title: '',
-        video: null,
-        thumbnail: null,
+        video: undefined,
+        thumbnail: undefined,
         prompt: '',
       });
       setUploading(false);
@@ -109,7 +88,6 @@ const Create = () => {
   };
   return (
     <ScrollView className='bg-primary px-4'>
-      <SafeAreaView />
       <Text className='mt-6 text-2xl text-white font-psemibold'>
         Upload Video
       </Text>
@@ -124,7 +102,7 @@ const Create = () => {
         <Text className='text-base text-gray-100 font-pmedium'>
           Upload Video
         </Text>
-        <TouchableOpacity onPress={() => openPicker('video')}>
+        <TouchableOpacity onPress={() => handleFiles('video')}>
           {form.video ? (
             <Video
               source={{ uri: form.video.uri }}
@@ -150,7 +128,7 @@ const Create = () => {
         <Text className='text-base text-gray-100 font-pmedium'>
           Thumbnail Image
         </Text>
-        <TouchableOpacity onPress={() => openPicker('image')}>
+        <TouchableOpacity onPress={() => handleFiles('image')}>
           {form.thumbnail ? (
             <Image
               source={{ uri: form.thumbnail.uri }}

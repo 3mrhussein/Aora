@@ -3,10 +3,8 @@ import React from 'react';
 import { Tabs, Redirect } from 'expo-router';
 import icons from '../../constants/icons';
 import TabIcon from '@/components/TabIcon';
-import useCheckSession from '@/hooks/useCheckSession';
 
 const TabsLayout = () => {
-  // useCheckSession();
   return (
     <>
       <Tabs

@@ -1,6 +1,6 @@
 import { config, databases, storage } from '@/lib/appwrite';
+import { ImagePickerAsset } from 'expo-image-picker';
 import { ID, ImageGravity, Models, Query } from 'react-native-appwrite';
-import { VideoType } from './Types/video.types';
 
 export const getAllPosts = async () => {
   try {
@@ -75,12 +75,12 @@ export const getFilePreview = async (fileId, type) => {
   }
 };
 
-export const uploadFile = async (file, type) => {
+export const uploadFile = async (file: ImagePickerAsset, type) => {
   if (!file) return;
   const asset = {
-    name: file.fileName,
-    type: file.mimeType ?? file.type,
-    size: file.fileSize,
+    name: file.fileName as string,
+    type: file.mimeType ?? (file.type as string),
+    size: file.fileSize as number,
     uri: file.uri,
   };
   try {
